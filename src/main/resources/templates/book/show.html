@@ -1,0 +1,33 @@
+<!DOCTYPE>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Info: Book</title>
+</head>
+<body>
+<h2>Information about the book</h2>
+
+<p th:text="'Name: ' + ${book.getName()}"></p>
+<p th:text="'Author: ' + ${book.getAuthor()}"></p>
+<p th:text="'Year of production: ' + ${book.getYear()}"></p>
+
+<div th:if="${borrower.isPresent()}">
+    <p>Borrower:</p>
+    <a th:href="@{/people/{id}(id=${borrower.get().getPerson_id()})}" th:text="${borrower.get().getFullName()}"> </a>
+    <p th:text="'Borrowed At: ' + ${book.getBorrowedAt()}"></p>
+    <p th:text="'Expired: ' + ${book.getExpiry()}"></p>
+    <form th:method="POST" th:action="@{/books/{id}/free(id=${book.getBook_id()})}" >
+        <input th:type="submit" value="FREE this book"/>
+    </form>
+</div>
+<div th:if="${!borrower.isPresent()}">
+    <p>This book is free</p>
+</div>
+
+<a th:href="@{/books/{id}/edit(id=${book.getBook_id()})}">Edit</a>
+<form th:method="DELETE" th:action="@{/books/{id}(id=${book.getBook_id()})}">
+    <input th:type="submit" value="DELETE"/>
+</form>
+
+
+</body>
+</html>
